@@ -12,6 +12,7 @@
     "runtest": "node ./bin/testApp.js"
   },
   "dependencies": {
+    "@mongodb-js/zstd": "^1.2.0",
     "@shelf/jest-mongodb": "^2.2.1",
     "aws-secrets-dotenv": "^1.0.0",
     "cookie-parser": "~1.4.4",

@@ -110,6 +110,7 @@ const generateNewRefreshToken = async (req, res, next) => {
         code: req.body.authorization_code,
         redirect_uri:process.env.RERUM_PREFIX
     }
+    console.log(form)
     try {
         // Successful responses from auth 0 look like {"refresh_token":"BLAHBLAH", "access_token":"BLAHBLAH"}
         // Error responses come back as successful, but they look like {"error":"blahblah", "error_description": "this is why"}
@@ -121,14 +122,21 @@ const generateNewRefreshToken = async (req, res, next) => {
             },
             body:JSON.stringify(form)
         })
-        .then(resp => resp.json())
+        .then(resp => {
+            console.log(resp)
+            return resp.json()
+            }
+        )
         .catch(err => {
             // Mock Auth0 error object
+            console.log("there has been an error")
             console.error(err)
             return {"error": true, "error_description":err}
         })
         // Here we need to check if this is an Auth0 success object or an Auth0 error object
         if(tokenObj.error){
+            console.log("eek an error")
+            console.log(tokenObj)
             console.error(tokenObj.error_description)
             res.status(500).send(tokenObj.error_description)
         }
@@ -137,6 +145,7 @@ const generateNewRefreshToken = async (req, res, next) => {
         }
      } 
      catch (e) {
+        console.log("oh boy an error")
         console.error(e.response ? e.response.body : e.message ? e.message : e)
         res.status(500).send(e)
      }
